@@ -19,6 +19,15 @@ public class Pathfinding : MonoBehaviour
         Vector3Int startCell = grid.WorldToCell(startWorldPos);
         Vector3Int targetCell = grid.WorldToCell(targetWorldPos);
 
+        // If the target cell isn't on the walkable tilemap at all, bail immediately
+        // rather than letting A* search forever with no reachable goal.
+        if (!IsWalkable(targetCell))
+            return null;
+
+        // Also bail if start equals target (no movement needed)
+        if (startCell == targetCell)
+            return null;
+
         Node startNode = new Node(true, startCell);
         Node targetNode = new Node(true, targetCell);
 
@@ -115,4 +124,13 @@ public class Pathfinding : MonoBehaviour
     {
         return walkableTilemap.HasTile(position) && !obstaclesTilemap.HasTile(position);
     }
+
+    /// <summary>Converts a world position to a tilemap cell coordinate.</summary>
+    public Vector3Int WorldToCell(Vector3 worldPos)
+    {
+        return grid.WorldToCell(worldPos);
+    }
+
+    /// <summary>Returns the size of one grid cell in world units.</summary>
+    public Vector3 CellSize => grid.cellSize;
 }

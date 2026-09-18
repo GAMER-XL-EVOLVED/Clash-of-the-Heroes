@@ -1,0 +1,16 @@
+import keyboard
+import time
+import sys
+
+def auto_press():
+    try:
+        print("Auto-pressing 'r' every second. Press Ctrl+C to stop.")
+        while True:
+            keyboard.press_and_release('r')
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nStopped auto-pressing.")
+        sys.exit()
+
+if __name__ == "__main__":
+    auto_press()
